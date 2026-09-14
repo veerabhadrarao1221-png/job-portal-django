@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Recruiter Dashboard{% endblock %}
+{% block content %}
+    <h2>Recruiter Dashboard</h2>
+    <p>Welcome, {{ user.username }}!</p>
+    <a href="{% url 'post_job' %}">Post a New Job</a>
+
+    <h3>Your Jobs</h3>
+    {% for job in jobs %}
+        <div class="card">
+            <p><strong>{{ job.title }}</strong> — {{ job.applications.count }} applicant(s)</p>
+            <a href="{% url 'view_applicants' job.id %}">View Applicants</a>
+        </div>
+    {% empty %}
+        <p>You haven't posted any jobs yet.</p>
+    {% endfor %}
+
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+{% endblock %}

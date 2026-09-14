@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Job Seeker Dashboard{% endblock %}
+{% block content %}
+    <h2>Job Seeker Dashboard</h2>
+    <p>Welcome, {{ user.username }}!</p>
+    <a href="{% url 'job_list' %}">Browse Jobs</a> |
+    <a href="{% url 'my_applications' %}">My Applications</a>
+
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+{% endblock %}

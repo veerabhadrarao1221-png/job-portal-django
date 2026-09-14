@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Applicants for {{ job.title }}{% endblock %}
+{% block content %}
+    <h2>Applicants for {{ job.title }}</h2>
+
+    {% for app in applications %}
+        <div class="card">
+            <p><strong>{{ app.jobseeker.profile.user.username }}</strong></p>
+            <p>Skills: {{ app.jobseeker.skills }}</p>
+            <p>Experience: {{ app.jobseeker.experience_years }} years</p>
+            <p>Current status: <strong>{{ app.status }}</strong></p>
+
+            <form method="POST" action="{% url 'update_status' app.id %}">
+                {% csrf_token %}
+                <select name="status">
+                    <option value="applied" {% if app.status == 'applied' %}selected{% endif %}>Applied</option>
+                    <option value="shortlisted" {% if app.status == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                    <option value="rejected" {% if app.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                    <option value="hired" {% if app.status == 'hired' %}selected{% endif %}>Hired</option>
+                </select>
+                <button type="submit">Update Status</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>No applicants yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'recruiter_dashboard' %}">Back to Dashboard</a>
+{% endblock %}
